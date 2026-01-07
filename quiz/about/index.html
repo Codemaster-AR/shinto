@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinto Beliefs & Culture Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .option-btn {
+            transition: all 0.2s ease;
+            border: 2px solid #e5e7eb;
+        }
+        .option-btn:hover {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+        .option-btn.selected {
+            border-color: #ef4444;
+            background-color: #ef4444;
+            color: white;
+        }
+        .correct {
+            border-color: #10b981 !important;
+            background-color: #ecfdf5 !important;
+            color: #065f46 !important;
+        }
+        .incorrect {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div id="quiz-container" class="w-full max-w-2xl card p-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Shinto Knowledge Quiz</h1>
+            <p class="text-gray-500">Test your understanding of the "Way of the Gods"</p>
+            <div class="w-full bg-gray-200 h-2 mt-6 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-red-500 h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Question Section -->
+        <div id="question-box">
+            <h2 id="question-text" class="text-xl font-semibold text-gray-700 mb-6">Loading question...</h2>
+            <div id="options-container" class="space-y-3">
+                <!-- Options will be injected here -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 flex justify-between items-center">
+            <span id="score-tracking" class="text-sm font-medium text-gray-500">Question 1 of 10</span>
+            <button id="next-btn" class="hidden bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                Next Question
+            </button>
+        </div>
+    </div>
+
+    <!-- Results Screen (Hidden by default) -->
+    <div id="results-container" class="hidden w-full max-w-2xl card p-8 text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Quiz Completed!</h2>
+        <div class="text-6xl mb-6">⛩️</div>
+        <p class="text-xl mb-6">You scored <span id="final-score" class="font-bold text-red-500">0</span> out of <span id="total-questions">0</span></p>
+        <button onclick="location.reload()" class="bg-gray-800 hover:bg-black text-white px-8 py-3 rounded-xl font-semibold transition-all">
+            Try Again
+        </button>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "When did the name 'Shinto' or 'Way of the Gods' first come into use?",
+                options: ["300 BCE", "300 CE", "6th Century", "869 AD"],
+                correct: 2
+            },
+            {
+                question: "What are the divine spirits in Shinto called?",
+                options: ["Komainu", "Kami", "Torii", "Amaterasu"],
+                correct: 1
+            },
+            {
+                question: "Which two religions are predominantly practiced throughout Japan?",
+                options: ["Shinto and Christianity", "Shinto and Hinduism", "Shinto and Buddhism", "Shinto and Taoism"],
+                correct: 2
+            },
+            {
+                question: "Approximately how many public Shinto shrines are there across Japan?",
+                options: ["1,000", "10,000", "60,000", "100,000"],
+                correct: 3
+            },
+            {
+                question: "Which month-long festival celebrated in Kyoto originated from an 869 plague festival?",
+                options: ["Gion Matsuri", "Kanda Matsuri", "Kagura Matsuri", "Yayoi Matsuri"],
+                correct: 0
+            },
+            {
+                question: "What is the primary purpose of the 'Torii' gates in Shinto architecture?",
+                options: ["To store holy accessories", "To house the sun goddess", "To ward off evil spirits and invite peace", "To provide a stage for dances"],
+                correct: 2
+            },
+            {
+                question: "The 'Kagura Dance' was born from stories of which deity?",
+                options: ["The God of Harvest", "Amaterasu, the Sun Goddess", "The God of Plague", "Komainu Guardians"],
+                correct: 1
+            },
+            {
+                question: "What does the name 'Kagura' literally mean?",
+                options: ["Way of the Gods", "Nature Dance", "God-Entertainment", "Peaceful Spirit"],
+                correct: 2
+            },
+            {
+                question: "Which period of prehistoric Japan marks the roots of Shinto's animalistic beliefs?",
+                options: ["Yayoi Period", "Gion Period", "Kanda Period", "Kyoto Period"],
+                correct: 0
+            },
+            {
+                question: "Who is the specific 'founder' or 'inventor' of Shinto?",
+                options: ["Amaterasu", "The Japanese Government", "An ancient priest in Kyoto", "Shinto has no single founder"],
+                correct: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreTracking = document.getElementById('score-tracking');
+        const progressBar = document.getElementById('progress-bar');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+
+        function loadQuestion() {
+            answered = false;
+            nextBtn.classList.add('hidden');
+            const data = quizData[currentQuestion];
+            
+            questionText.innerText = data.question;
+            scoreTracking.innerText = `Question ${currentQuestion + 1} of ${quizData.length}`;
+            progressBar.style.width = `${((currentQuestion) / quizData.length) * 100}%`;
+            
+            optionsContainer.innerHTML = '';
+            data.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.classList.add('option-btn', 'w-full', 'text-left', 'p-4', 'rounded-xl', 'text-lg', 'font-medium');
+                button.onclick = () => selectOption(index, button);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectOption(index, button) {
+            if (answered) return;
+            answered = true;
+
+            const correctIndex = quizData[currentQuestion].correct;
+            const buttons = optionsContainer.getElementsByTagName('button');
+
+            if (index === correctIndex) {
+                button.classList.add('correct');
+                score++;
+            } else {
+                button.classList.add('incorrect');
+                buttons[correctIndex].classList.add('correct');
+            }
+
+            nextBtn.classList.remove('hidden');
+            if (currentQuestion === quizData.length - 1) {
+                nextBtn.innerText = "See Results";
+            }
+        }
+
+        nextBtn.onclick = () => {
+            currentQuestion++;
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        };
+
+        function showResults() {
+            quizContainer.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('total-questions').innerText = quizData.length;
+        }
+
+        // Initialize quiz
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
