@@ -1,1 +1,100 @@
-Hello!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinto - Gateway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Inter:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaf7;
+            color: #2d2d2d;
+            background-image: 
+                radial-gradient(#e6394611 1px, transparent 1px),
+                radial-gradient(#e6394611 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+
+        .japanese-style {
+            font-family: 'Noto+Serif+JP', serif;
+        }
+
+        .torii-gate {
+            border-top: 12px solid #e63946;
+            border-left: 8px solid #e63946;
+            border-right: 8px solid #e63946;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+
+        .torii-gate::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: -8px;
+            right: -8px;
+            height: 8px;
+            background: #e63946;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .btn-shinto {
+            background-color: #e63946;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 0 0 #b91c1c;
+        }
+
+        .btn-shinto:hover {
+            background-color: #ef4444;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 0 #b91c1c;
+        }
+
+        .btn-shinto:active {
+            transform: translateY(2px);
+            box-shadow: 0 0px 0 0 #b91c1c;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-md w-full text-center">
+        <!-- Decorative Icon/Element -->
+        <div class="mb-8 flex justify-center">
+            <div class="torii-gate w-24 h-24"></div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-10 shadow-xl border-t-4 border-red-600">
+            <h1 class="text-5xl font-bold mb-4 japanese-style tracking-wider text-gray-900">
+                SHINTO
+            </h1>
+            <p class="text-gray-600 mb-10 leading-relaxed">
+                Explore the sacred essence of the universe and the infinite world of the Kami.
+            </p>
+
+            <a href="http://695c932a15efe.site123.me" 
+               class="btn-shinto inline-block w-full text-white font-bold py-4 px-8 rounded-xl text-lg uppercase tracking-widest">
+                Enter Sanctuary
+            </a>
+            
+            <div class="mt-8 pt-8 border-t border-gray-100">
+                <p class="text-xs text-gray-400 uppercase tracking-tighter japanese-style">
+                    Nature Spirits • Divine Power • Infinite Essence
+                </p>
+            </div>
+        </div>
+        
+        <p class="mt-8 text-sm text-gray-400 italic">
+            "Yaoyorozu no Kami — The Infinite Spirits"
+        </p>
+    </div>
+</body>
+</html>
