@@ -1,2 +1,2 @@
-# shinto
+# Shinto
 Shinto, the indigenous spirituality of Japan, centers around the reverence of kami (spirits associated with natural elements and ancestor worship), embodying a profound connection with nature and tradition. Our website serves as a gateway to explore the enthralling world of Shinto beliefs, providing insights into its rich history, spiritual practices, and the role it has played in shaping Japanese culture. Join us as we delve into the mystique of this ancient path. Website: [codemaster-ar.github.io/shinto](codemaster-ar.github.io/shinto)
